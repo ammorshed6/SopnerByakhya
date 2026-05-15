@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1a0f05">
+<title>স্বপ্নের ব্যাখ্যা — ইবনে সীরীন</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --bg: #1a0f05;
+  --gold: #c9922a;
+  --gold2: #e8b84b;
+  --cream: #fdf6e3;
+  --dark: #120a02;
+  --muted: rgba(220,170,80,.45);
+}
+
+html, body { height: 100%; overflow: hidden; background: var(--bg); }
+
+body {
+  font-family: 'Noto Serif Bengali', serif;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  height: 100vh;
+}
+
+/* ── TOPBAR ─────────────── */
+.topbar {
+  background: linear-gradient(135deg, #2a1506, #3d2010);
+  border-bottom: 2px solid var(--gold);
+  padding: 8px 12px 6px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 3px 12px rgba(0,0,0,.5);
+  z-index: 20;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  color: var(--gold2);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 2px 6px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.topbar-info { flex: 1; min-width: 0; }
+
+.topbar-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gold2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topbar-sub {
+  font-size: 10px;
+  color: var(--muted);
+  font-family: sans-serif;
+}
+
+.page-info {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--muted);
+  font-family: sans-serif;
+  text-align: right;
+}
+
+/* ── SIDE DRAWER ─────────── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  z-index: 40;
+  display: none;
+  backdrop-filter: blur(2px);
+}
+.overlay.open { display: block; }
+
+.drawer {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: 82%;
+  max-width: 320px;
+  background: #1e1005;
+  z-index: 50;
+  transform: translateX(100%);
+  transition: transform .28s cubic-bezier(.4,0,.2,1);
+  display: flex;
+  flex-direction: column;
+  border-left: 2px solid var(--gold);
+}
+.drawer.open { transform: translateX(0); }
+
+.drawer-header {
+  background: linear-gradient(135deg, #2a1506, #3d2010);
+  border-bottom: 1px solid var(--gold);
+  padding: 14px 14px 10px;
+  flex-shrink: 0;
+}
+
+.drawer-header h2 {
+  font-size: 15px;
+  color: var(--gold2);
+  font-weight: 700;
+}
+
+.drawer-header p {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+  font-family: sans-serif;
+}
+
+.drawer-close {
+  position: absolute;
+  top: 10px; right: 10px;
+  background: none;
+  border: none;
+  color: var(--gold);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.chapter-list {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.chapter-item {
+  padding: 11px 14px;
+  border-bottom: 1px solid rgba(200,140,40,.12);
+  cursor: pointer;
+  transition: background .12s;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.chapter-item:active { background: rgba(201,146,42,.12); }
+.chapter-item.active { background: rgba(201,146,42,.15); }
+
+.ch-num {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(201,146,42,.2);
+  border: 1px solid rgba(201,146,42,.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: var(--gold2);
+  font-family: sans-serif;
+  margin-top: 1px;
+}
+
+.ch-text {
+  font-size: 12.5px;
+  color: #d4b070;
+  line-height: 1.45;
+  font-family: 'Noto Sans Bengali', sans-serif;
+}
+
+/* ── PAGE JUMP INPUT ─────── */
+.jump-row {
+  padding: 8px 14px;
+  border-top: 1px solid rgba(200,140,40,.2);
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+  background: #150d03;
+}
+
+.jump-row label {
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+  font-family: sans-serif;
+}
+
+.jump-row input {
+  flex: 1;
+  padding: 5px 8px;
+  border-radius: 20px;
+  border: 1px solid rgba(201,146,42,.4);
+  background: rgba(255,255,255,.06);
+  color: var(--cream);
+  font-size: 13px;
+  outline: none;
+  text-align: center;
+  font-family: sans-serif;
+}
+
+.jump-row button {
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: none;
+  background: var(--gold);
+  color: #1a0f05;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: sans-serif;
+}
+
+/* ── BOOK VIEWER ─────────── */
+.book-area {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  background: #0f0804;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: pan-y;
+}
+
+.page-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 2px;
+  position: relative;
+}
+
+.book-page {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  box-shadow: 0 4px 24px rgba(0,0,0,.7);
+  border: 1px solid rgba(200,150,60,.15);
+  display: block;
+  border-radius: 1px;
+  transition: opacity .18s;
+}
+
+.page-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-family: sans-serif;
+  font-size: 13px;
+  gap: 12px;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(201,146,42,.2);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── NAV BAR ─────────────── */
+.navbar {
+  background: linear-gradient(180deg, #120a02, #1a0f05);
+  border-top: 1px solid rgba(201,146,42,.25);
+  padding: 8px 10px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.nav-btn {
+  background: linear-gradient(135deg, #2a1506, #3d2010);
+  border: 1px solid rgba(201,146,42,.35);
+  color: var(--gold2);
+  border-radius: 24px;
+  padding: 8px 20px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all .12s;
+  font-family: sans-serif;
+  line-height: 1;
+}
+.nav-btn:active { background: rgba(201,146,42,.2); transform: scale(.96); }
+.nav-btn:disabled { opacity: .3; pointer-events: none; }
+
+.progress-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 3px;
+  background: rgba(201,146,42,.15);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--gold2));
+  border-radius: 2px;
+  transition: width .3s;
+}
+
+.progress-text {
+  font-size: 10px;
+  color: var(--muted);
+  font-family: sans-serif;
+}
+
+/* ── SWIPE HINT ──────────── */
+.swipe-hint {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  text-align: center;
+  font-size: 10px;
+  color: rgba(200,150,60,.3);
+  padding: 2px;
+  font-family: sans-serif;
+  pointer-events: none;
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;700&family=Noto+Sans+Bengali:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <button class="menu-btn" onclick="toggleDrawer()" title="সূচিপত্র">☰</button>
+  <div class="topbar-info">
+    <div class="topbar-title">স্বপ্নের ব্যাখ্যা</div>
+    <div class="topbar-sub">আল্লামা মুহাম্মদ ইবনে সীরীন (রহঃ)</div>
+  </div>
+  <div class="page-info">
+    <div id="topPageNum">পাতা ১</div>
+    <div>/ ১৪৭</div>
+  </div>
+</div>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+
+<!-- DRAWER -->
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <h2>📖 সূচিপত্র</h2>
+    <p>স্বপ্নের ব্যাখ্যা — ২৫টি পরিচ্ছেদ</p>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="chapter-list" id="chapterList"></div>
+  <div class="jump-row">
+    <label>পাতায় যান:</label>
+    <input type="number" id="jumpInput" min="1" max="147" placeholder="১-১৪৭">
+    <button onclick="doJump()">যান</button>
+  </div>
+</div>
+
+<!-- BOOK VIEWER -->
+<div class="book-area" id="bookArea">
+  <div class="page-container" id="pageContainer">
+    <div class="page-loading" id="loadingIndicator">
+      <div class="spinner"></div>
+      <div>পাতা লোড হচ্ছে…</div>
+    </div>
+    <img class="book-page" id="bookPage" src="" alt="বইয়ের পাতা" style="opacity:0"
+         onload="onPageLoaded()" onerror="onPageError()">
+  </div>
+  <div class="swipe-hint">← সোয়াইপ করুন →</div>
+</div>
+
+<!-- NAV BAR -->
+<div class="navbar">
+  <button class="nav-btn" id="prevBtn" onclick="goPage(-1)">◀</button>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">পাতা ১ / ১৪৭</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="goPage(1)">▶</button>
+</div>
+
+<!-- DATA FILES -->
+<script src="chapters.js"></script>
+<script src="pages_data.js"></script>
+
+<script>
+let currentPage = 0; // 0-indexed
+const TOTAL = TOTAL_PAGES;
+
+// চ্যাপ্টার লিস্ট তৈরি
+function buildChapterList() {
+  const list = document.getElementById('chapterList');
+  CHAPTERS.forEach((ch, i) => {
+    const item = document.createElement('div');
+    item.className = 'chapter-item';
+    item.id = 'ch-' + i;
+    item.innerHTML = `
+      <div class="ch-num">${i === 0 ? '📋' : i}</div>
+      <div class="ch-text">${ch.title}</div>`;
+    item.onclick = () => {
+      goToPage(ch.page - 1);
+      closeDrawer();
+    };
+    list.appendChild(item);
+  });
+}
+
+function updateActiveChapter() {
+  document.querySelectorAll('.chapter-item').forEach(el => el.classList.remove('active'));
+  // কোন চ্যাপ্টারে আছি খুঁজি
+  let activeIdx = 0;
+  for (let i = 0; i < CHAPTERS.length; i++) {
+    if (currentPage + 1 >= CHAPTERS[i].page) activeIdx = i;
+  }
+  const el = document.getElementById('ch-' + activeIdx);
+  if (el) el.classList.add('active');
+}
+
+function showPage(idx) {
+  if (idx < 0 || idx >= TOTAL) return;
+  currentPage = idx;
+  
+  const img = document.getElementById('bookPage');
+  const loader = document.getElementById('loadingIndicator');
+  
+  img.style.opacity = '0';
+  loader.style.display = 'flex';
+  
+  // ছবি লোড
+  img.src = PAGES[currentPage];
+  
+  // UI আপডেট
+  const pageNum = currentPage + 1;
+  document.getElementById('topPageNum').textContent = 'পাতা ' + pageNum;
+  document.getElementById('progressText').textContent = 'পাতা ' + pageNum + ' / ' + TOTAL;
+  const pct = ((pageNum) / TOTAL * 100).toFixed(1);
+  document.getElementById('progressFill').style.width = pct + '%';
+  
+  document.getElementById('prevBtn').disabled = currentPage === 0;
+  document.getElementById('nextBtn').disabled = currentPage === TOTAL - 1;
+  
+  updateActiveChapter();
+}
+
+function goPage(dir) {
+  showPage(currentPage + dir);
+}
+
+function goToPage(idx) {
+  showPage(Math.max(0, Math.min(TOTAL - 1, idx)));
+}
+
+function onPageLoaded() {
+  document.getElementById('loadingIndicator').style.display = 'none';
+  document.getElementById('bookPage').style.opacity = '1';
+}
+
+function onPageError() {
+  document.getElementById('loadingIndicator').innerHTML = '<div style="color:#c66">পাতা লোড হয়নি</div>';
+}
+
+// Drawer
+function toggleDrawer() {
+  const d = document.getElementById('drawer');
+  const o = document.getElementById('overlay');
+  d.classList.toggle('open');
+  o.classList.toggle('open');
+}
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+
+// পেজ জাম্প
+function doJump() {
+  const v = parseInt(document.getElementById('jumpInput').value);
+  if (v >= 1 && v <= TOTAL) goToPage(v - 1);
+}
+document.getElementById('jumpInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doJump();
+});
+
+// Touch/Swipe
+let touchStartX = 0, touchStartY = 0;
+const area = document.getElementById('bookArea');
+
+area.addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+}, {passive: true});
+
+area.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 45) {
+    if (dx < 0) goPage(1);  // বাম সোয়াইপ → পরের পাতা
+    else goPage(-1);         // ডান সোয়াইপ → আগের পাতা
+  }
+}, {passive: true});
+
+// কীবোর্ড
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goPage(1);
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goPage(-1);
+});
+
+// শুরু
+buildChapterList();
+showPage(0);
+</script>
+</body>
+</html>
