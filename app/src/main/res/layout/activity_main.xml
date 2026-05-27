@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <WebView android:id="@+id/webview"
+        android:layout_width="match_parent" android:layout_height="match_parent"/>
+
+    <!-- @A.M.MORSHED watermark — সবসময় স্ক্রিনে দেখাবে -->
+    <TextView
+        android:id="@+id/watermark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="8dp"
+        android:text="@A.M.MORSHED"
+        android:textColor="#FFFFFF"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:background="#CC0000"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:elevation="10dp"
+        android:letterSpacing="0.05"
+        android:fontFamily="monospace"/>
+
+</RelativeLayout>
